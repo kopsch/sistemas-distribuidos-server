@@ -158,17 +158,9 @@ public class UserController {
     }
 
     public void handleLogout(JsonNode jsonNode, ObjectNode responseNode, PrintWriter out) {
-        String token = jsonNode.get("token").asText();
 
-        if (userSessionMap.remove(token) != null) {
-            sessionUserMap.remove(token);
-            responseNode.put("status", 200);
-            responseNode.put("mensagem", "Logout bem-sucedido");
-        } else {
-            responseNode.put("status", 400);
-            responseNode.put("mensagem", "Token inválido");
-        }
-
+        responseNode.put("status", 200);
+        responseNode.put("mensagem", "Logout bem-sucedido");
         responseNode.put("operacao", "logout");
         out.println(responseNode.toString());
     }

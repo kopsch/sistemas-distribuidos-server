@@ -1,8 +1,11 @@
 package com.sistemasdistribuidos.server;
 
 import com.sistemasdistribuidos.server.controllers.UserController;
+import com.sistemasdistribuidos.server.controllers.EnterpriseController;
 import com.sistemasdistribuidos.server.models.User;
+import com.sistemasdistribuidos.server.models.Enterprise;
 import com.sistemasdistribuidos.server.services.UserService;
+import com.sistemasdistribuidos.server.services.EnterpriseService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -19,9 +22,13 @@ public class Server {
     private static final int PORT = 22222;
     private static final ExecutorService pool = Executors.newCachedThreadPool();
     private static final UserService userService = new UserService();
+    private static final EnterpriseService enterpriseService = new EnterpriseService();
     private static final Map<String, User> userSessionMap = new HashMap<>();
+    private static final Map<String, Enterprise> enterpriseSessionMap = new HashMap<>();
     private static final Map<String, User> sessionUserMap = new HashMap<>();
+    private static final Map<String, Enterprise> sessionEnterpriseMap = new HashMap<>();
     private static final UserController userController = new UserController(userService, userSessionMap, sessionUserMap);
+    private static final EnterpriseController enterpriseController = new EnterpriseController(enterpriseService, enterpriseSessionMap, sessionEnterpriseMap);
 
     public static void main(String[] args) {
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
@@ -82,6 +89,21 @@ public class Server {
                         break;
                     case "logout":
                         userController.handleLogout(jsonNode, responseNode, out);
+                        break;
+                    case "cadastrarEmpresa":
+                        enterpriseController.handleCadastrarEmpresa(jsonNode, responseNode, out);
+                        break;
+                    case "loginEmpresa":
+                        enterpriseController.handleLoginEmpresa(jsonNode, responseNode, out);
+                        break;
+                    case "atualizarEmpresa":
+                        enterpriseController.handleAtualizarEmpresa(jsonNode, responseNode, out);
+                        break;
+                    case "visualizarEmpresa":
+                        enterpriseController.handleVisualizarEmpresa(jsonNode, responseNode, out);
+                        break;
+                    case "apagarEmpresa":
+                        enterpriseController.handleApagarEmpresa(jsonNode, responseNode, out);
                         break;
                     default:
                         responseNode.put("status", 400);

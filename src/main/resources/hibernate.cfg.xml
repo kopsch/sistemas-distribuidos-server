@@ -26,5 +26,6 @@
 
         <!-- Mapeamento de classes -->
         <mapping class="com.sistemasdistribuidos.server.models.User"/>
+        <mapping class="com.sistemasdistribuidos.server.models.Enterprise"/>
     </session-factory>
 </hibernate-configuration>
